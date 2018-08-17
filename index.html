@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+     <script src="https://cdn.rawgit.com/archilogic-com/aframe-gblock/6498b71d/dist/gblock.js"></script>
+     <link rel="stylesheet" href="style.css" type="text/css" />
+     <embed name="los" src="/web_design/lostmojo.wav" width="150" height="90" loop="false" autostart="false">
+   <style>
+@import url('https://fonts.googleapis.com/css?family=Kosugi');
+</style>
+        <title>Pacman</title>
+    </head>
+    
+    <p id="pelletDisplay">Pellets:</p>
+    <a-scene>
+        <!--Make a player/camera entity, and give it the attributes we need it to have in order control camera with mouse, movement with WASD, and jump with spacebar-->
+            <a-entity class="player" id="player"
+                camera
+                jump-ability
+                kinematic-body
+                position="0 5 0"
+                universal-controls="movementAcceleration: 900">
+            </a-entity>
+        <!--outerwalls-->
+            <a-box  id="topwall" color="blue" height="40" width="400" depth="30" static-body position="-0.947 -4.249 -355.638" scale="1.8 1 1"></a-box>
+            <a-box  id="bottomwall" color="blue" height="40" width="400" depth="30" static-body position="-0.947 -4.249 355.638" scale="1.8 1 1"></a-box>
+    
+            <a-box id="sidewallA" color="blue" height="40" width="400" depth="30" static-body position="350 0 183.977" scale=".8 1 1" rotation="0 90 0"></a-box>
+            <a-box id="sidewallB" color="blue" height="40" width="400" depth="30" static-body position="350.010 0 -191.306" scale=".8 1 1" rotation="0 90 0"></a-box>
+            <a-box id="sidewallA1" color="blue" height="40" width="400" depth="30" static-body position="-350 0 183.977" scale=".8 1 1" rotation="0 90 0"></a-box>
+            <a-box id="sidewallB1" color="blue" height="40" width="400" depth="30" static-body position="-350.010 0 -191.306" scale=".8 1 1" rotation="0 90 0"></a-box>
+            <a-box id="clearbox" opacity="0" height="40" width="50" depth="50" static-body position="355 0 0"></a-box>
+            <a-text id="teleporter" value="Teleporter" position="324.346 6.737 -9N.634" color="yellow" scale="20 20 20" rotation="0 -90 0"></a-text>
+            <a-box id="clearbox1" opacity="0" height="40" width="50" depth="50" static-body position="-355 0 0" scale="1 1 1.2"></a-box>
+            <a-text id="teleporter1" value="Teleporter" position="-325.890 11.129 9.025" color="yellow" scale="20 20 20" rotation="0 90 0"></a-text>
+
+        <!--Pink Ghost-->
+        <a-entity id="ghost" class="ghost">
+                <a-entity id="ghost1" gblock="https://poly.google.com/view/9Gn8qCJ_chZ" scale=".07 .07 .07" position="3 -10 0" rotation="-90 0 0"></a-entity>
+                <a-entity id="ghost2" gblock="https://poly.google.com/view/9Gn8qCJ_chZ" scale=".07 .07 .07" position="5 -10 0" rotation="-90 0 0"></a-entity>
+                <a-entity id="ghost3" gblock="https://poly.google.com/view/9Gn8qCJ_chZ" scale=".07 .07 .07" position="10 -10 0" rotation="-90 0 0"></a-entity>
+                <a-entity id="ghost4" gblock="https://poly.google.com/view/9Gn8qCJ_chZ" scale=".07 .07 .07" position="15 -10 0" rotation="-90 0 0"></a-entity>
+          
+         </a-entity>
+
+       <!-- innerBox -->
+            <a-plane id="floormid" color="yellow" height="100" width="100" static-body position="7.267 -10 0" rotation="-90 180 0"></a-plane>
+            <a-box id="floor" color="black" height="700" width="700" static-body position="0 -10.9 0" rotation="-90 180 0"></a-box>
+            <a-box id="frontLeft" color="blue" height="40" width="120" static-body position="-26.852 0 -50.547" scale=".3 1 1 "></a-box>
+            <a-box id="frontRight" color="blue" height="40" width="120" static-body position="34.129 0 -50.233" scale=".45 1 1 "></a-box>
+            <a-box id="left" color="blue" height="40" width="250" static-body position="-42.125 0 -0.149" scale="0.400 1 1" rotation="0 90 0"></a-box>
+            <a-box id="right" color="blue" height="40" width="200" static-body position="57.941 -0.5 -0.720" scale=".5 1 1" rotation="0 -90 0"></a-box>
+            <a-box id="back" color="blue" height="40" width="200" static-body position="7.654 0 50.044" scale=".5 1 1" rotation="0.458 180.000 -180.000"></a-box>
+        
+        <!--Mazewalls-->
+            <a-box id="T1" color="blue" height="40" width="150" depth="30" static-body position="0 0 -149.803" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T2" color="blue" height="40" width="150" depth="30" static-body position="0 0 -143" scale=".7 1 1"></a-box>
+            <a-box id="T3" color="blue" height="40" width="200" depth="40" static-body position="105 0 -110" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T4" color="blue" height="40" width="100" depth="30" static-body position="63 0 -81" scale=".7 1 1"></a-box>
+         <!--horizontal-->
+            <a-box id="T5" color="blue" height="40" width="100" depth="30" static-body position="275 0 -63" scale=".7 1 1" rotation="0 90 0"></a-box>
+              <a-box id="T8" color="blue" height="40" width="25" depth="30" static-body position="167 0 -160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T9" color="blue" height="40" width="25" depth="30" static-body position="250 0 -160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T10" color="blue" height="40" width="75" depth="30" static-body position="266 0 -265" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T11" color="blue" height="40" width="75" depth="30" static-body position="175 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T12" color="blue" height="40" width="90" depth="30" static-body position="127 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T13" color="blue" height="40" width="75" depth="30" static-body position="60 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T14" color="blue" height="40" width="100" depth="30" static-body position="170 0 -63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T15" color="blue" height="40" width="150" depth="30" static-body position="0 0 -300" scale=".7 1 1" rotation="0 90 0"></a-box>
+        <!--verticle-->
+            <a-box id="T17" color="blue" height="40" width="100" depth="30" static-body position="95 0 -290" scale=".7 1 1"></a-box>
+            <a-box id="T18" color="blue" height="40" width="100" depth="30" static-body position="95 0 -235" scale=".7 1 1"></a-box>
+            <a-box id="T19" color="blue" height="40" width="125" depth="30" static-body position="219 0 -235" scale=".7 1 1"></a-box>
+            <a-box id="T20" color="blue" height="40" width="125" depth="30" static-body position="219 0 -289" scale=".7 1 1"></a-box>
+            <a-box id="T21" color="blue" height="40" width="120" depth="30" static-body position="212 0 -167" scale=".7 1 1"></a-box>
+            <a-box id="T22" color="blue" height="40" width="120" depth="30" static-body position="212 0 -150" scale=".7 1 1"></a-box>
+            <a-box id="T23" color="blue" height="40" width="120" depth="30" static-body position="225 0 -30" scale=".7 1 1"></a-box>
+            <a-box id="T24" color="blue" height="40" width="120" depth="30" static-body position="225 0 -95" scale=".7 1 1"></a-box>
+    <!--left top copy-->      
+                      
+                        
+                        
+         <!--maze walls-->
+            <a-box id="T1b" color="blue" height="40" width="150" depth="30" static-body position="0 0 -149.803" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T2b" color="blue" height="40" width="150" depth="30" static-body position="0 0 -143" scale=".7 1 1"></a-box>
+            <a-box id="T3b" color="blue" height="40" width="200" depth="40" static-body position="-105 0 -110" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T4b" color="blue" height="40" width="100" depth="30" static-body position="-63 0 -81" scale=".7 1 1"></a-box>
+         <!--horizontal-->
+            <a-box id="T5b" color="blue" height="40" width="100" depth="30" static-body position="-275 0 -63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T8b" color="blue" height="40" width="25" depth="30" static-body position="-167 0 -160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T9b" color="blue" height="40" width="25" depth="30" static-body position="-250 0 -160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T10b" color="blue" height="40" width="75" depth="30" static-body position="-266 0 -265" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T11b" color="blue" height="40" width="75" depth="30" static-body position="-175 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T12b" color="blue" height="40" width="90" depth="30" static-body position="-127 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T13b" color="blue" height="40" width="75" depth="30" static-body position="-60 0 -260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T14b" color="blue" height="40" width="100" depth="30" static-body position="-170 0 -63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T15b" color="blue" height="40" width="150" depth="30" static-body position="0 0 -300" scale=".7 1 1" rotation="0 90 0"></a-box>
+        <!--verticle-->
+            <a-box id="T17b" color="blue" height="40" width="100" depth="30" static-body position="-95 0 -290" scale=".7 1 1"></a-box>
+            <a-box id="T18b" color="blue" height="40" width="100" depth="30" static-body position="-95 0 -235" scale=".7 1 1"></a-box>
+            <a-box id="T19b" color="blue" height="40" width="125" depth="30" static-body position="-219 0 -235" scale=".7 1 1"></a-box>
+            <a-box id="T20b" color="blue" height="40" width="125" depth="30" static-body position="-219 0 -289" scale=".7 1 1"></a-box>
+            <a-box id="T21b" color="blue" height="40" width="120" depth="30" static-body position="-212 0 -167" scale=".7 1 1"></a-box>
+            <a-box id="T22b" color="blue" height="40" width="120" depth="30" static-body position="-212 0 -150" scale=".7 1 1"></a-box>
+            <a-box id="T23b" color="blue" height="40" width="120" depth="30" static-body position="-225 0 -30" scale=".7 1 1"></a-box>
+            <a-box id="T24b" color="blue" height="40" width="120" depth="30" static-body position="-225 0 -95" scale=".7 1 1"></a-box>
+              
+              
+        <!--left bottom-->
+                <!--maze walls-->
+            <a-box id="T1c" color="blue" height="40" width="150" depth="30" static-body position="0 0 149.803" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T2c" color="blue" height="40" width="150" depth="30" static-body position="0 0 143" scale=".7 1 1"></a-box>
+            <a-box id="T3c" color="blue" height="40" width="200" depth="40" static-body position="-105 0 110" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T4c" color="blue" height="40" width="100" depth="30" static-body position="-63 0 81" scale=".7 1 1"></a-box>
+         <!--horizontal-->
+            <a-box id="T5c" color="blue" height="40" width="100" depth="30" static-body position="-275 0 63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T8c" color="blue" height="40" width="25" depth="30" static-body position="-167 0 160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T9c" color="blue" height="40" width="25" depth="30" static-body position="-250 0 160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T10c" color="blue" height="40" width="75" depth="30" static-body position="-266 0 265" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T11c" color="blue" height="40" width="75" depth="30" static-body position="-175 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T12c" color="blue" height="40" width="90" depth="30" static-body position="-127 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T13c" color="blue" height="40" width="75" depth="30" static-body position="-60 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T14c" color="blue" height="40" width="100" depth="30" static-body position="-170 0 63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T15c" color="blue" height="40" width="150" depth="30" static-body position="0 0 300" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T16c" color="blue" height="40" width="50" depth="30" static-body position="100 0 0" scale=".7 1 1"></a-box>
+            <a-box id="T&" color="blue" height="40" width="50" depth="30" static-body position="-100 0 0" scale=".7 1 1"></a-box>
+        
+        <!--verticle-->
+            <a-box id="T17c" color="blue" height="40" width="100" depth="30" static-body position="-95 0 290" scale=".7 1 1"></a-box>
+            <a-box id="T18c" color="blue" height="40" width="100" depth="30" static-body position="-95 0 235" scale=".7 1 1"></a-box>
+            <a-box id="T19c" color="blue" height="40" width="125" depth="30" static-body position="-219 0 235" scale=".7 1 1"></a-box>
+            <a-box id="T20c" color="blue" height="40" width="125" depth="30" static-body position="-219 0 289" scale=".7 1 1"></a-box>
+            <a-box id="T21c" color="blue" height="40" width="120" depth="30" static-body position="-212 0 167" scale=".7 1 1"></a-box>
+            <a-box id="T22c" color="blue" height="40" width="120" depth="30" static-body position="-212 0 150" scale=".7 1 1"></a-box>
+            <a-box id="T23c" color="blue" height="40" width="120" depth="30" static-body position="-225 0 30" scale=".7 1 1"></a-box>
+            <a-box id="T24c" color="blue" height="40" width="120" depth="30" static-body position="-225 0 95" scale=".7 1 1"></a-box>
+            
+            
+            
+            
+        <!--right bottom-->
+           <!--maze walls-->
+            <a-box id="T1d" color="blue" height="40" width="150" depth="30" static-body position="0 0 149.803" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T2d" color="blue" height="40" width="150" depth="30" static-body position="0 0 143" scale=".7 1 1"></a-box>
+            <a-box id="T3d" color="blue" height="40" width="200" depth="40" static-body position="105 0 110" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T4d" color="blue" height="40" width="100" depth="30" static-body position="63 0 81" scale=".7 1 1"></a-box>
+         <!--horizontal-->
+            <a-box id="T5d" color="blue" height="40" width="100" depth="30" static-body position="275 0 63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T8d" color="blue" height="40" width="25" depth="30" static-body position="167 0 160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T9d" color="blue" height="40" width="25" depth="30" static-body position="250 0 160" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T10d" color="blue" height="40" width="75" depth="30" static-body position="266 0 265" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T11d" color="blue" height="40" width="75" depth="30" static-body position="175 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T12d" color="blue" height="40" width="90" depth="30" static-body position="127 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T13d" color="blue" height="40" width="75" depth="30" static-body position="60 0 260" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T14d" color="blue" height="40" width="100" depth="30" static-body position="170 0 63" scale=".7 1 1" rotation="0 90 0"></a-box>
+            <a-box id="T15d" color="blue" height="40" width="150" depth="30" static-body position="0 0 300" scale=".7 1 1" rotation="0 90 0"></a-box>
+        <!--verticle-->
+            <a-box id="T17d" color="blue" height="40" width="100" depth="30" static-body position="95 0 290" scale=".7 1 1"></a-box>
+            <a-box id="T18d" color="blue" height="40" width="100" depth="30" static-body position="95 0 235" scale=".7 1 1"></a-box>
+            <a-box id="T19d" color="blue" height="40" width="125" depth="30" static-body position="219 0 235" scale=".7 1 1"></a-box>
+            <a-box id="T20d" color="blue" height="40" width="125" depth="30" static-body position="219 0 289" scale=".7 1 1"></a-box>
+            <a-box id="T21d" color="blue" height="40" width="120" depth="30" static-body position="212 0 167" scale=".7 1 1"></a-box>
+            <a-box id="T22d" color="blue" height="40" width="120" depth="30" static-body position="212 0 150" scale=".7 1 1"></a-box>
+            <a-box id="T23d" color="blue" height="40" width="120" depth="30" static-body position="225 0 30" scale=".7 1 1"></a-box>
+            <a-box id="T24d" color="blue" height="40" width="120" depth="30" static-body position="225 0 95" scale=".7 1 1"></a-box>
+            
+    <!--Pellets-->
+                <a-sphere id="pellet"position="34.129 0 -50.233" scale="5 5 5"></a-sphere>
+                <a-text id="pelletText" value="This is a pellet!" position="38.25 0 -47.941" color="yellow" scale="12 12 12"></a-text>
+                <a-text id="pelletText1" value="Collect 10 to win." position="36.550 -4.377 -48" color="yellow" scale="12 12 12"></a-text>
+    <!--Fruit-->
+        <a-sphere id="fruitCounter" class="fruit" gblock="https://poly.google.com/view/9cFoY7E-8mu" scale="0.03 0.03 0.03" position="0 -10 -65" scale="1 1 1" static-body></a-sphere>
+        <a-sphere id="fruitCounter1" class="fruit" gblock="https://poly.google.com/view/9cFoY7E-8mu" scale="0.03 0.03 0.03" position="23.999 -8.5 -110" scale="1 1 1" static-body></a-sphere>
+         
+                <a-sphere id="pellet1" class="pellet" position="23.999 -8.5 -103.949" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet2" class="pellet" position="66.081 -8.5 -113.401" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet3" class="pellet" position="66.091 -8.5 -188.874" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet4" class="pellet" position="28.118 -8.5 -219.826" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet5" class="pellet" position="-35.028 -8.5 -219.826" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet6" class="pellet" position="-66.081 -8.5 -188.874" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet7" class="pellet" position="-66.081 -8.5 -113.401" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet8" class="pellet" position="-23.999 -8.5 -103.949" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet9" class="pellet" position="2.341 -8.5 -74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet10" class="pellet" position="2.341 -8.5 -229.821" scale="2 2 2" static-body></a-sphere>
+            <!--bottom-->
+                <a-sphere id="pellet11" class="pellet" position="23.999 -8.5 103.949" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet12" class="pellet" position="66.081 -8.5 113.401" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet13" class="pellet" position="66.091 -8.5 188.874" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet14" class="pellet" position="28.118 -8.5 219.826" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet15" class="pellet" position="-35.028 -8.5 219.826" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet16" class="pellet" position="-66.081 -8.5 188.874" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet17" class="pellet" position="-66.081 -8.5 113.401" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet18" class="pellet" position="-23.999 -8.5 103.949" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet19" class="pellet" position="2.341 -8.5 74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet20" class="pellet" position="2.341 -8.5 229.821" scale="2 2 2" static-body></a-sphere>
+            <!--right top-->
+                <a-sphere id="pellet21b" class="pellet" position="-73 -8.5 -260" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet22b" class="pellet" position="70 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet23b" class="pellet" position="161 -8.5 -188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet24b" class="pellet" position="75 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet25b" class="pellet" position="7 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet26b" class="pellet" position="100 -8.5 -27" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet27b" class="pellet" position="150 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet28b" class="pellet" position="225 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet29b" class="pellet" position="280 -8.5 -74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet30b" class="pellet" position="160 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet31b" class="pellet" position="160 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet32b" class="pellet" position="215 -8.5 -120" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet33b" class="pellet" position="270 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet34b" class="pellet" position="312 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet35b" class="pellet" position="312 -8.5 -58" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet36b" class="pellet" position="312 -8.5 -128" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet37b" class="pellet" position="312 -8.5 -167" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet38b" class="pellet" position="312 -8.5 -203" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet39b" class="pellet" position="312 -8.5 -245" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet40b" class="pellet" position="312 -8.5 -277" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet41b" class="pellet" position="193 -8.5 -204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet42b" class="pellet" position="235 -8.5 -204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet43b" class="pellet" position="161 -8.5 -188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet44b" class="pellet" position="267 -8.5 -185" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet45b" class="pellet" position="278 -8.5 -230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet46b" class="pellet" position="276 -8.5 -206" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet47b" class="pellet" position="235 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet48b" class="pellet" position="198 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet49b" class="pellet" position="280 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet50b" class="pellet" position="152.911 -8.5 -319.230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet51b" class="pellet" position="152 -8.5 -209" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet52b" class="pellet" position="100 -8.5 -319.230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet53b" class="pellet" position="270 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet54b" class="pellet" position="318 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet55b" class="pellet" position="59 -8.5 -325" scale="2 2 2" static-body></a-sphere>                <!--<a-sphere id="pellet56" class="pellet" position="312 -8.5 128" scale="2 2 2" static-body></a-sphere>-->
+                <a-sphere id="pellet57b" class="pellet" position="36 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet58b" class="pellet" position="138 -8.5 -61" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet59b" class="pellet" position="138 -8.5 -98" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet60b" class="pellet" position="138 -8.5 -202" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet61b" class="pellet" position="27 -8.5 -286" scale="2 2 2" static-body></a-sphere>
+
+<!--right bottom-->
+                <a-sphere id="pellet21" class="pellet" position="-73 -8.5 260" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet22" class="pellet" position="70 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet23" class="pellet" position="161 -8.5 188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet24" class="pellet" position="75 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet25" class="pellet" position="7 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet26" class="pellet" position="100 -8.5 27" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet27" class="pellet" position="150 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet28" class="pellet" position="225 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet29" class="pellet" position="280 -8.5 74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet30" class="pellet" position="160 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet31" class="pellet" position="160 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet32" class="pellet" position="215 -8.5 120" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet33" class="pellet" position="270 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet34" class="pellet" position="312 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet35" class="pellet" position="312 -8.5 58" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet36" class="pellet" position="312 -8.5 128" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet37" class="pellet" position="312 -8.5 167" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet38" class="pellet" position="312 -8.5 203" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet39" class="pellet" position="312 -8.5 245" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet40" class="pellet" position="312 -8.5 277" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet41" class="pellet" position="193 -8.5 204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet42" class="pellet" position="235 -8.5 204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet43" class="pellet" position="161 -8.5 188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet44" class="pellet" position="267 -8.5 185" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet45" class="pellet" position="278 -8.5 230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet46" class="pellet" position="276 -8.5 206" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet47" class="pellet" position="235 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet48" class="pellet" position="198 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet49" class="pellet" position="280 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet50" class="pellet" position="152.911 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet51" class="pellet" position="152 -8.5 209" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet52" class="pellet" position="104 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet53" class="pellet" position="270 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet54" class="pellet" position="313.294 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet55" class="pellet" position="62 -8.5 325" scale="2 2 2" static-body></a-sphere>                <!--<a-sphere id="pellet56" class="pellet" position="312 -8.5 128" scale="2 2 2" static-body></a-sphere>-->
+                <a-sphere id="pellet57" class="pellet" position="27 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet58" class="pellet" position="138 -8.5 61" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet59" class="pellet" position="138 -8.5 98" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet60" class="pellet" position="104 -8.5 202" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet61" class="pellet" position="27 -8.5 286" scale="2 2 2" static-body></a-sphere>
+                
+    <!--left bottom-->
+                <a-sphere id="pellet21c" class="pellet" position="73 -8.5 260" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet22c" class="pellet" position="-70 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet23c" class="pellet" position="-161 -8.5 188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet24c" class="pellet" position="-75 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet25c" class="pellet" position="-7 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet26c" class="pellet" position="-100 -8.5 27" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet27c" class="pellet" position="-150 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet28c" class="pellet" position="-225 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet29c" class="pellet" position="-280 -8.5 74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet30c" class="pellet" position="-160 -8.5 60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet31c" class="pellet" position="-160 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet32c" class="pellet" position="-215 -8.5 120" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet33c" class="pellet" position="-270 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet34c" class="pellet" position="-312 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet35c" class="pellet" position="-312 -8.5 58" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet36c" class="pellet" position="-312 -8.5 128" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet37c" class="pellet" position="-312 -8.5 167" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet38c" class="pellet" position="-312 -8.5 203" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet39c" class="pellet" position="-312 -8.5 245" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet40c" class="pellet" position="-312 -8.5 277" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet41c" class="pellet" position="-193 -8.5 204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet42c" class="pellet" position="-235 -8.5 204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet43c" class="pellet" position="-161 -8.5 188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet44c" class="pellet" position="-267 -8.5 185" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet45c" class="pellet" position="-278 -8.5 230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet46c" class="pellet" position="-276 -8.5 206" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet47c" class="pellet" position="-235 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet48c" class="pellet" position="-198 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet49c" class="pellet" position="-280 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet50c" class="pellet" position="-152.911 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet51c" class="pellet" position="-152 -8.5 209" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet52c" class="pellet" position="-115 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet53c" class="pellet" position="-270 -8.5 133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet54c" class="pellet" position="-312 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet55c" class="pellet" position="-81 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet57c" class="pellet" position="-36 -8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet58c" class="pellet" position="-138 -8.5 61" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet59c" class="pellet" position="-138 -8.5 98" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet60c" class="pellet" position="-107 -8.5 202" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet61c" class="pellet" position="-27 -8.5 286" scale="2 2 2" static-body></a-sphere>
+                
+     <!--left top-->
+                <a-sphere id="pellet21d" class="pellet" position="73 -8.5 -260" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet22d" class="pellet" position="-70 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet23d" class="pellet" position="-161 -8.5 -188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet24d" class="pellet" position="-75 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet25d" class="pellet" position="-7 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet26d" class="pellet" position="-100 -8.5 -27" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet27d" class="pellet" position="-150 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet28d" class="pellet" position="-225 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet29d" class="pellet" position="-280 -8.5 -74.306" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet30d" class="pellet" position="-160 -8.5 -60" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet31d" class="pellet" position="-160 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet32d" class="pellet" position="-215 -8.5 -120" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet33d" class="pellet" position="-270 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet34d" class="pellet" position="-312 -8.5 0" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet35d" class="pellet" position="-312 -8.5 -58" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet36d" class="pellet" position="-312 -8.5 -128" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet37d" class="pellet" position="-312 -8.5 -167" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet38d" class="pellet" position="-312 -8.5 -203" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet39d" class="pellet" position="-312 -8.5 -245" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet40d" class="pellet" position="-312 -8.5 -277" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet41d" class="pellet" position="-193 -8.5 -204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet42d" class="pellet" position="-235 -8.5 -204" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet43d" class="pellet" position="-161 -8.5 -188" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet44d" class="pellet" position="-267 -8.5 -185" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet45d" class="pellet" position="-278 -8.5 -230" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet46d" class="pellet" position="-276 -8.5 -206" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet47d" class="pellet" position="-235 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet48d" class="pellet" position="-198 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet49d" class="pellet" position="-280 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet50d" class="pellet" position="-152.911 8.5 325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet51d" class="pellet" position="-152 -8.5 -209" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet52d" class="pellet" position="-115 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet53d" class="pellet" position="-270 -8.5 -133" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet54d" class="pellet" position="-312 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet55d" class="pellet" position="-81 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet57d" class="pellet" position="-36 -8.5 -325" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet58d" class="pellet" position="-138 -8.5 -61" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet59d" class="pellet" position="-138 -8.5 -98" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet60d" class="pellet" position="-138 -8.5 -202" scale="2 2 2" static-body></a-sphere>
+                <a-sphere id="pellet61d" class="pellet" position="-27 -8.5 -286" scale="2 2 2" static-body></a-sphere>
+
+            <a-entity id="SXSW" gblock="https://poly.google.com/view/1qnlNOYgFGP" scale="5 5 5" position="3 8 0"></a-entity>
+            <a-text value="Welcome to Pacman!" position="-8.637 3 -25.305" color="yellow" scale="12 12 12"></a-text>
+             </a-scene>
+   
+    <script type="text/javascript" src="pacman.js"></script>
+</html>
